@@ -20,7 +20,7 @@ When running the first time, the commands should be executed in the order above 
 - create a sqlite3 database with a products table.
 - populate the database with the products specifications.
 - update the product prices in the database.
-- generate a simple html file with an overview of the products.
+- generate a simple html file with an overview of all the different specifications.
 
 # Build
 
