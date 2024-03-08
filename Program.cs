@@ -98,6 +98,7 @@ namespace com.erlendthune.garmin
                 Console.WriteLine("Usage: dotnet run [command]");
                 Console.WriteLine("Available commands:");
                 Console.WriteLine("- get-product-list");
+                Console.WriteLine("- get-products-html-files");
                 Console.WriteLine("- get-prices");
                 Console.WriteLine("- update-prices");
                 Console.WriteLine("- create-table");

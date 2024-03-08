@@ -1,24 +1,37 @@
-VO2 max multisport: https://support.garmin.com/en-IN/?faq=DrBIn5T0TX3PH4LBYokzz9
+# Garmin products and specifications
 
-Specifications for one product:
-https://www.garmin.com/en-US/compare/?compareProduct=873008
+The code in this repository compiles to a console app which can be called with the following arguments:
 
-List of all products:
-https://www.garmin.com/c/api/getProducts?categoryKey=10002&locale=en-US&storeCode=US
+- get-product-list
+- get-products-html-files
+- extract-products-to-json-from-html-files
+- get-prices
+- create-table
+- populate-database-from-json-files
+- update-prices
+- generate-html
 
-Product prices:
-https://www.garmin.com/c/api/getProductsPrice?productIds=621922&productIds=628939&productIds=641121&productIds=646690&productIds=698632&productIds=713363&productIds=731641&productIds=741137&productIds=777655&productIds=777730&productIds=780139&productIds=780154&productIds=780165&productIds=780196&productIds=886689&productIds=886725&productIds=886785&countryCode=NO&storeCode=NO&locale=nb-NO&categoryKey=10002&appName=www-category-pages&cg=none
+When running the first time, the commands should be executed in the order above and will do the following:
 
-select displayName, specKey, specDisplayValue from products where specKey like "productSpecV02Max";
+- download a list of Garmin products and store in a json file.
+- download the html files for each product in the json file.
+- extract the specifications for each product from the html files and stores them in json files.
+- download the prices for the products and store them in json files.
+- create a sqlite3 database with a products table.
+- populate the database with the products specifications.
+- update the product prices in the database.
+- generate a simple html file with an overview of the products.
 
-select displayName, specKey, specDisplayValue from products where specKey like "productSpecV02Max" or specKey like "%productSpecFeaturePowerMeterComp%";
+# Build
 
-SELECT displayName
-FROM Products
-WHERE specKey = 'productSpecV02Max' AND specDisplayValue = 'Yes'
-AND displayName IN (
-    SELECT displayName
-    FROM Products
-    WHERE specKey = 'productSpecFeaturePowerMeterComp' AND specDisplayValue = 'Yes'
-)
-ORDER BY displayName;
+`dotnet build`
+
+# Run
+
+`bin/Debug/net8.0/garmin command`
+
+# What next
+
+- Download the [Garmin wizard](https://github.com/garminwizard/garminwizard-homepage)
+- Copy the products.db to that project.
+- Adapt the wizard to your needs. 
