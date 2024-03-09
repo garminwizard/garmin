@@ -5,14 +5,44 @@ using System.Net;
 
 public class PopulateDatabaseCommand
 {
-    string connectionString;
+    private static string connectionString = $"Data Source={Config.databaseFilePath};Version=3;";
 
-    public PopulateDatabaseCommand()
+    public static void Execute()
     {
-        connectionString = $"Data Source={Config.databaseFilePath};Version=3;";
+        // Check if the specified directory exists
+        if (!Directory.Exists(Config.jsonProductsDirectory))
+        {
+            Console.WriteLine($"Directory '{Config.jsonProductsDirectory}' does not exist.");
+            return;
+        }
+
+        try
+        {
+            // Get all files in the specified directory
+            string[] files = Directory.GetFiles(Config.jsonProductsDirectory);
+
+            // Iterate over each file and perform operations
+            using (var connection = new SQLiteConnection(connectionString))
+            {
+                // Open connection
+                connection.Open();
+
+                foreach (string filePath in files)
+                {
+                    Console.WriteLine($"Processing file: {filePath}");
+                    InsertProductsIntoTable(connection, filePath);
+                }
+            }
+
+            Console.WriteLine("All files processed successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while processing files: {ex.Message}");
+        }
     }
 
-    private void InsertProductsIntoTable(SQLiteConnection connection, string jsonProductPath)
+    private static void InsertProductsIntoTable(SQLiteConnection connection, string jsonProductPath)
     {
         try {
             // Read the JSON content from the file
@@ -93,42 +123,7 @@ public class PopulateDatabaseCommand
         }
     }
 
-    public void Execute(string directoryPath)
-    {
-        // Check if the specified directory exists
-        if (!Directory.Exists(directoryPath))
-        {
-            Console.WriteLine($"Directory '{directoryPath}' does not exist.");
-            return;
-        }
-
-        try
-        {
-            // Get all files in the specified directory
-            string[] files = Directory.GetFiles(directoryPath);
-
-            // Iterate over each file and perform operations
-            using (var connection = new SQLiteConnection(connectionString))
-            {
-                // Open connection
-                connection.Open();
-
-                foreach (string filePath in files)
-                {
-                    Console.WriteLine($"Processing file: {filePath}");
-                    InsertProductsIntoTable(connection, filePath);
-                }
-            }
-
-            Console.WriteLine("All files processed successfully.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while processing files: {ex.Message}");
-        }
-    }
-
-    private string StripHtml(string input)
+    private static string StripHtml(string input)
     {
        // Remove HTML tags
         string noHtml = Regex.Replace(input, "<.*?>", string.Empty);

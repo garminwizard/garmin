@@ -65,7 +65,7 @@ _ReSharper*/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
-products/
-jsonproducts/
-jsonprices/
+products/*
+jsonproducts/*
+jsonprices/*
 products.db

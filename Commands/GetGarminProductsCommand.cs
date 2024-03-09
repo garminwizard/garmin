@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-public class GetGarminProducts
+public class GetGarminProductsCommand
 {
-    public async Task ExecuteAsync() 
+    public static async Task ExecuteAsync() 
     {
         try
         {

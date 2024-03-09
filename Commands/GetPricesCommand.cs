@@ -2,13 +2,9 @@
 
 using Newtonsoft.Json;
 
-public class GetPrices
+public class GetPricesCommand
 {
-    public GetPrices()
-    {
-    }
-
-    public async Task ExecuteAsync() 
+    public static async Task ExecuteAsync() 
     {
         try
         {

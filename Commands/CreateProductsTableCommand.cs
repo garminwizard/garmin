@@ -2,14 +2,9 @@ using System.Data.SQLite;
 
 public class CreateProductsTableCommand
 {
-    private string connectionString;
+    private static string connectionString = $"Data Source={Config.databaseFilePath};Version=3;";
 
-    public CreateProductsTableCommand()
-    {
-        connectionString = $"Data Source={Config.databaseFilePath};Version=3;";
-    }
-
-    public void Execute()
+    public static void Execute()
     {
             // Create SQLite database connection
         using (var connection = new SQLiteConnection(connectionString))
