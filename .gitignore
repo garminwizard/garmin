@@ -65,7 +65,9 @@ _ReSharper*/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
-products/*
-jsonproducts/*
-jsonprices/*
+/products/*
+/jsonproducts/*
+/jsonprices/*
+/htmlproducts/*
 products.db
+garminproductlist.js

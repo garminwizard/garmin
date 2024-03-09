@@ -37,7 +37,6 @@ public class GetPricesCommand
                         // Iterate over each product ID
                         foreach (var productId in product.ProductIds)
                         {
-                            // Construct the comparison URL
                             string priceUrl = $"https://www.garmin.com/c/api/getProductsPrice?productIds={productId}&countryCode=US&storeCode=US&locale=en-US&categoryKey=10002&appName=www-category-pages&cg=none";
 
                             var response = await client.GetAsync(priceUrl);

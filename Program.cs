@@ -6,35 +6,6 @@ namespace com.erlendthune.garmin
 {
     class Program
     {
-        private const string productListUrl = $"https://www.garmin.com/c/api/getProducts?categoryKey=10002&locale=en-US&storeCode=US";
-        
-        static async Task GetProductListAsync()
-        {
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    var response = await client.GetAsync(productListUrl);
-                    // Check if the response is successful
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Read the content of the response
-                        string productListContent = await response.Content.ReadAsStringAsync();
-                        File.WriteAllText(Config.jsonProductListFilePath, productListContent);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Failed to retrieve data. Status code: {response.StatusCode}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"An error occurred: {ex.Message}");
-                }
-            }
-        }
-
-
 
         static async Task Main(string[] args)
         {
@@ -53,12 +24,14 @@ namespace com.erlendthune.garmin
                 return;
             }
 
+            Config.CreateDirectories();
+
             string command = args[0];
 
             switch (command)
             {
                 case "get-product-list":
-                    await GetProductListAsync();
+                    await GetProductListCommand.ExecuteAsync();
                     break;
                 case "get-products-html-files":
                     await GetGarminProductsCommand.ExecuteAsync();
