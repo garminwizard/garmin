@@ -2,7 +2,7 @@
 class Config 
 {
     public static string productListUrl = "https://www.garmin.com/c/api/getProducts?categoryKey=10002&locale=en-US&storeCode=US";
-    public static string jsonProductListFilePath = "garminproductlist.js";
+    public static string jsonProductListFilePath = "garminproductlist.json";
     public static string htmlProductsDirectory = "htmlproducts";
     public static string jsonProductsDirectory = "jsonproducts";
     public static string jsonPriceDirectory = "jsonprices";

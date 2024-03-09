@@ -53,7 +53,7 @@ public class ExtractProductsFromHtmlFilesCommand
             // Write the content to a JSON file
             File.WriteAllText(jsonFilePath, productDataContent);
 
-            Console.WriteLine($"Content of AppData.productData variable saved to file: {Config.jsonProductsDirectory}");
+            Console.WriteLine($"Content of {htmlFilePath} saved to file: {Config.jsonProductsDirectory}");
         }
         else
         {
