@@ -32,31 +32,27 @@ public class GetPricesCommand
                 foreach (var product in root.Products)
                 {
                     // Check if the productIds list contains elements
-                    if (product.ProductIds != null && product.ProductIds.Count > 0)
+                    if (product.Group == false)
                     {
-                        // Iterate over each product ID
-                        foreach (var productId in product.ProductIds)
+                        string priceUrl = $"https://www.garmin.com/c/api/getProductsPrice?productIds={product.Id}&countryCode=US&storeCode=US&locale=en-US&categoryKey=10002&appName=www-category-pages&cg=none";
+
+                        var response = await client.GetAsync(priceUrl);
+                        // Check if the response is successful
+                        if (response.IsSuccessStatusCode)
                         {
-                            string priceUrl = $"https://www.garmin.com/c/api/getProductsPrice?productIds={productId}&countryCode=US&storeCode=US&locale=en-US&categoryKey=10002&appName=www-category-pages&cg=none";
+                            // Read the content of the response
+                            string productContent = await response.Content.ReadAsStringAsync();
 
-                            var response = await client.GetAsync(priceUrl);
-                            // Check if the response is successful
-                            if (response.IsSuccessStatusCode)
-                            {
-                                // Read the content of the response
-                                string productContent = await response.Content.ReadAsStringAsync();
+                            // Save the resulting content to a HTML file named after the product ID
+                            string fileName = $"{Config.jsonPriceDirectory}/{product.Id}.json";
+                            File.WriteAllText(fileName, productContent);
 
-                                // Save the resulting content to a HTML file named after the product ID
-                                string fileName = $"{Config.jsonPriceDirectory}/{productId}.json";
-                                File.WriteAllText(fileName, productContent);
+                            Console.WriteLine($"Price for product ID {product.Id} saved to file: {fileName}");
 
-                                Console.WriteLine($"Price for product ID {productId} saved to file: {fileName}");
-
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Failed to retrieve data. Status code: {response.StatusCode}");
-                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to retrieve data. Status code: {response.StatusCode}");
                         }
                     }
                 }

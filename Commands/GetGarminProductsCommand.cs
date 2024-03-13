@@ -29,33 +29,27 @@ public class GetGarminProductsCommand
                 // Iterate over each product
                 foreach (var product in root.Products)
                 {
-                    // Check if the productIds list contains elements
-                    if (product.ProductIds != null && product.ProductIds.Count > 0)
+                    if (product.Group == false)
                     {
-                        // Iterate over each product ID
-                        foreach (var productId in product.ProductIds)
+                        string compareUrl = $"https://www.garmin.com/en-US/compare/?compareProduct={product.Id}";
+
+                        var response = await client.GetAsync(compareUrl);
+                        // Check if the response is successful
+                        if (response.IsSuccessStatusCode)
                         {
-                            // Construct the comparison URL
-                            string compareUrl = $"https://www.garmin.com/en-US/compare/?compareProduct={productId}";
+                            // Read the content of the response
+                            string productContent = await response.Content.ReadAsStringAsync();
 
-                            var response = await client.GetAsync(compareUrl);
-                            // Check if the response is successful
-                            if (response.IsSuccessStatusCode)
-                            {
-                                // Read the content of the response
-                                string productContent = await response.Content.ReadAsStringAsync();
+                            // Save the resulting content to a HTML file named after the product ID
+                            string fileName = $"{Config.htmlProductsDirectory}/{product.Id}.html";
+                            File.WriteAllText(fileName, productContent);
 
-                                // Save the resulting content to a HTML file named after the product ID
-                                string fileName = $"{Config.htmlProductsDirectory}/{productId}.html";
-                                File.WriteAllText(fileName, productContent);
+                            Console.WriteLine($"Content for product ID {product.Id} saved to file: {fileName}");
 
-                                Console.WriteLine($"Content for product ID {productId} saved to file: {fileName}");
-
-                            }
-                            else
-                            {
-                                Console.WriteLine($"Failed to retrieve data. Status code: {response.StatusCode}");
-                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Failed to retrieve data. Status code: {response.StatusCode}");
                         }
                     }
                 }

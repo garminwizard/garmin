@@ -20,7 +20,6 @@ namespace com.erlendthune.garmin
                 Console.WriteLine("- create-table");
                 Console.WriteLine("- extract-products-to-json-from-html-files");
                 Console.WriteLine("- populate-database-from-json-files");
-                Console.WriteLine("- generate-html");
                 return;
             }
 
@@ -50,9 +49,6 @@ namespace com.erlendthune.garmin
                     break;
                 case "populate-database-from-json-files":
                     PopulateDatabaseCommand.Execute();
-                    break;
-                case "generate-html":
-                    HtmlTableGeneratorCommand.Execute();
                     break;
                 default:
                     Console.WriteLine($"Unknown command: {command}");
