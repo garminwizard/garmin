@@ -34,7 +34,7 @@ public class GetPricesCommand
                     // Check if the productIds list contains elements
                     if (product.Group == false)
                     {
-                        string priceUrl = $"https://www.garmin.com/c/api/getProductsPrice?productIds={product.Id}&countryCode=US&storeCode=US&locale=en-US&categoryKey=10002&appName=www-category-pages&cg=none";
+                        string priceUrl = $"https://buy.garmin.com/pricing-proxy-services/countries/US/pid/{product.Id}/prices?locale=en-US&customerGroup=none";
 
                         var response = await client.GetAsync(priceUrl);
                         // Check if the response is successful

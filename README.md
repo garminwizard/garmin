@@ -30,8 +30,8 @@ When running the first time, the commands should be executed in the order above 
 
 `bin/Debug/net8.0/garmin command`
 
-# What next
+# Garmin wizard
 
 - Download the [Garmin wizard](https://github.com/garminwizard/garminwizard-homepage)
-- Copy the products.db to that project.
+- Copy the products.db to that projects `static/garmin` directory.
 - Adapt the wizard to your needs. 

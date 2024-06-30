@@ -94,22 +94,45 @@ public class ProductRootObject
     public ProductSpecs? productSpecs { get; set; }
 }
 
-public class Unformatted
-{
-    public string? salePrice { get; set; }
-    public string? listPrice { get; set; }
-}
-
-public class SkuPromotions
-{
-    // You can add properties specific to skuPromotions if needed
-}
-
+// Root price class
 public class ProductPrice
 {
-    public string? id { get; set; }
-    public string? salePrice { get; set; }
-    public string? listPrice { get; set; }
-    public Unformatted? unformatted { get; set; }
-    public SkuPromotions? skuPromotions { get; set; }
+    public string? Pid { get; set; }
+
+    public List<PricedSku>? PricedSkus { get; set; }
+}
+
+// PricedSku class
+public class PricedSku
+{
+    public string? PartNumber { get; set; }
+
+    public List<string>? AppliedPromotionGuids { get; set; }
+
+    public decimal? SalePrice { get; set; }
+
+    public ListPrice? ListPrice { get; set; }
+
+    public decimal? Savings { get; set; }
+}
+
+public class ListPrice
+{
+    public decimal Price { get; set; }
+
+    public string? WholeUnitAmount { get; set; }
+
+    public string? CurrencySymbol { get; set; }
+
+    public string? DecimalSeparator { get; set; }
+
+    public int TenthDigit { get; set; }
+
+    public int HundredthDigit { get; set; }
+
+    public string? CurrencyCode { get; set; }
+
+    public string? Template { get; set; }
+
+    public string? FormattedPrice { get; set; }
 }

@@ -1,7 +1,6 @@
 using System.Data.SQLite;
 using Newtonsoft.Json;
-using System.Text.RegularExpressions;
-using System.Net;
+using System.Globalization;
 
 public class UpdateDatabasePricesCommand
 {
@@ -48,35 +47,37 @@ public class UpdateDatabasePricesCommand
         {
             // Read the JSON content from the file
             string jsonContent = File.ReadAllText(jsonPricePath);
-            Console.WriteLine(jsonContent);
 
             // Deserialize the JSON content
-            List<ProductPrice>? productPrices = JsonConvert.DeserializeObject<List<ProductPrice>>(jsonContent);
+            ProductPrice? productPrice = JsonConvert.DeserializeObject<ProductPrice>(jsonContent);
 
-            if (productPrices is null)
+            if (productPrice is null || productPrice.PricedSkus is null)
             {
                 Console.WriteLine($"Deserialization of {jsonPricePath} gave null value.");
                 return;
             }
 
-            // Extract price data
-            var priceObject = productPrices[0];
-
-            if (priceObject.unformatted == null)
+            double price = 0.0;
+            var priceFound = false;
+            foreach (var sku in productPrice.PricedSkus)
             {
-                Console.WriteLine($"{jsonPricePath} did not contain any unformatted price.");
-                return;
+                if(sku is not null && sku.ListPrice != null)
+                {
+                    if(!priceFound)
+                    {
+                        priceFound = true;
+                        price = (double)sku.ListPrice.Price;
+                    } else {
+                        price = Math.Min((double)sku.ListPrice.Price, price);
+                    }
+                }
             }
 
-            var price = priceObject.unformatted.listPrice;
-            var id = priceObject.id;
+            var id = productPrice.Pid;
 
-            if (price == null || id == null)
-            {
-                Console.WriteLine($"{jsonPricePath} did not contain any price.");
-                return;
-            }
-            var updateSql = $"UPDATE products SET price = '{price}' WHERE productId = '{id}';";
+            var formattedPrice = price.ToString("F2", CultureInfo.InvariantCulture);
+            var updateSql = $"UPDATE products SET price = '{formattedPrice}' WHERE productId = '{id}';";
+            Console.WriteLine(updateSql);
             using (var updateCommand = new SQLiteCommand(updateSql, connection))
             {
                 updateCommand.ExecuteNonQuery(); ;
